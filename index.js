@@ -1,4 +1,6 @@
 import { createCharacterCard } from "./components/CharacterCard/CharacterCard.js";
+import { NavButton } from "./components/NavButton/NavButton.js";
+import { NavPagination } from "./components/NavPagination/NavPagination.js";
 
 const cardContainer = document.querySelector('[data-js="card-container"]');
 const searchBarContainer = document.querySelector(
@@ -6,9 +8,7 @@ const searchBarContainer = document.querySelector(
 );
 const searchBar = document.querySelector('[data-js="search-bar"]');
 const navigation = document.querySelector('[data-js="navigation"]');
-const prevButton = document.querySelector('[data-js="button-prev"]');
-const nextButton = document.querySelector('[data-js="button-next"]');
-const pagination = document.querySelector('[data-js="pagination"]');
+const header = document.querySelector('[data-js="header"]');
 
 // States
 let maxPage = 42;
@@ -26,34 +26,38 @@ async function fetchCharacters() {
 
   // Pagination
   maxPage = data.info.pages;
-  pagination.innerText = `${page} / ${maxPage}`;
+  paginationElement.innerText = `${page} / ${maxPage}`;
+  //Characters
   characters.forEach((character) => {
-    const card = createCharacterCard(
-      character.image,
-      character.name,
-      character.status,
-      character.type,
-      character.episode
-    );
+    const card = createCharacterCard(character);
     cardContainer.append(card);
   });
 
   return characters, info;
 }
-// Prev + Next Button
-nextButton.addEventListener("click", () => {
-  if (page < maxPage) {
-    page++;
-    fetchCharacters(page);
+
+//Nav Buttons and Pagination
+const dynamicPrevButton = NavButton("Previous Page", () => {
+  if (page > 1) {
+    page--;
+    fetchCharacters();
   }
 });
 
-prevButton.addEventListener("click", () => {
-  if (page > 1) {
-    page--;
-    fetchCharacters(page);
+const paginationElement = NavPagination();
+
+const dynamicNextButton = NavButton("Next Page", () => {
+  if (page < maxPage) {
+    page++;
+    fetchCharacters();
   }
 });
+navigation.append(dynamicPrevButton, paginationElement, dynamicNextButton);
+
+const superButton = NavButton("Super", () => {
+  console.log("I am super!");
+});
+header.append(superButton);
 
 // Search
 searchBar.addEventListener("submit", (event) => {
