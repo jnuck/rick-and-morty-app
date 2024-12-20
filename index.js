@@ -1,12 +1,12 @@
 import { createCharacterCard } from "./components/CharacterCard/CharacterCard.js";
 import { NavButton } from "./components/NavButton/NavButton.js";
 import { NavPagination } from "./components/NavPagination/NavPagination.js";
+import { SearchBar } from "./components/SearchBar/SearchBar.js";
 
 const cardContainer = document.querySelector('[data-js="card-container"]');
 const searchBarContainer = document.querySelector(
   '[data-js="search-bar-container"]'
 );
-const searchBar = document.querySelector('[data-js="search-bar"]');
 const navigation = document.querySelector('[data-js="navigation"]');
 const header = document.querySelector('[data-js="header"]');
 
@@ -54,17 +54,18 @@ const dynamicNextButton = NavButton("Next Page", () => {
 });
 navigation.append(dynamicPrevButton, paginationElement, dynamicNextButton);
 
-const superButton = NavButton("Super", () => {
-  console.log("I am super!");
-});
-header.append(superButton);
+// const homeButton = NavButton("Super", () => {
+//   console.log("I am super!");
+// });
+// header.append(homeButton);
 
 // Search
-searchBar.addEventListener("submit", (event) => {
+const searchBar = SearchBar((event) => {
   event.preventDefault();
   searchQuery = event.target.elements.query.value;
+  page = 1;
   fetchCharacters();
-  event.target.reset();
 });
+searchBarContainer.append(searchBar);
 
 fetchCharacters();
