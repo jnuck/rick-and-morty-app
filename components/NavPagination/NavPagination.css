@@ -1,10 +1,22 @@
 .navigation {
-  height: 30px;
+  height: 50px;
   display: grid;
   grid-template-columns: 100px 100px 100px;
+  justify-content: center;
+  align-items: center;
+  color: rgb(0, 0, 0);
+  background-color: rgb(255, 255, 255);
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  padding: 5px;
 }
 
 .navigation__pagination {
   display: grid;
   place-items: center;
+}
+
+button {
+  padding: 5px;
 }
